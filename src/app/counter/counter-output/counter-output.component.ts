@@ -1,5 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Observable, Subscription } from 'rxjs';
 
+import { CounterState } from '../state/counter.state';
 import { Store } from '@ngrx/store';
 
 @Component({
@@ -9,12 +11,11 @@ import { Store } from '@ngrx/store';
 })
 export class CounterOutputComponent implements OnInit {
   counter: number = 0;
+  counter$: Observable<CounterState> | undefined;
 
-  constructor(private store: Store<{ counter: { counter: number } }>) {}
+  constructor(private store: Store<{ counter: CounterState }>) {}
 
   ngOnInit(): void {
-    this.store.select('counter').subscribe((data) => {
-      this.counter = data.counter;
-    });
+    this.counter$ = this.store.select('counter');
   }
 }
