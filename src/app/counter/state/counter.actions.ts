@@ -7,3 +7,4 @@ export const customIncrement = createAction(
   'customincrement',
   props<{ value: number }>()
 );
+export const changeName = createAction('changename');
