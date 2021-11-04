@@ -1,3 +1,4 @@
+import { AppState } from './../../store/app.state';
 import { Component, OnInit } from '@angular/core';
 import { changeName, customIncrement } from './../state/counter.actions';
 
@@ -14,7 +15,7 @@ export class CustomCounterInputComponent implements OnInit {
   value: number = 0;
   myName: string = '';
 
-  constructor(private store: Store<{ counter: CounterState }>) {}
+  constructor(private store: Store<AppState>) {}
 
   ngOnInit(): void {
     this.store.select(getName).subscribe((data) => {

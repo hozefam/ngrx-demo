@@ -1,4 +1,4 @@
-import { initialState } from './posts.actions';
+import { initialState } from './posts.state';
 import { createReducer } from '@ngrx/store';
 
 const _postsReducer = createReducer(initialState);
