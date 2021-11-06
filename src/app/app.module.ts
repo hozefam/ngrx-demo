@@ -1,38 +1,19 @@
-import { environment } from './../environments/environment';
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-import { BrowserModule } from '@angular/platform-browser';
-import { CounterButtonsComponent } from './counter/counter-buttons/counter-buttons.component';
-import { CounterComponent } from './counter/counter/counter.component';
-import { CounterOutputComponent } from './counter/counter-output/counter-output.component';
-import { CustomCounterInputComponent } from './counter/custom-counter-input/custom-counter-input.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NgModule } from '@angular/core';
-import { StoreModule } from '@ngrx/store';
-import { counterReducer } from './counter/state/counter.reducer';
-import { HomeComponent } from './home/home.component';
-import { RouterModule } from '@angular/router';
+
+import { AppComponent } from './app.component';
+import { AppRoutingModule } from './app-routing.module';
+import { BrowserModule } from '@angular/platform-browser';
 import { HeaderComponent } from './shared/components/header/header.component';
-import { PostsListComponent } from './posts/posts-list/posts-list.component';
+import { HomeComponent } from './home/home.component';
+import { NgModule } from '@angular/core';
+import { RouterModule } from '@angular/router';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { postsReducer } from './posts/state/posts.reducer';
+import { StoreModule } from '@ngrx/store';
 import { appReducer } from './store/app.state';
-import { AddPostComponent } from './posts/add-post/add-post.component';
-import { EditPostComponent } from './posts/edit-post/edit-post.component';
+import { environment } from './../environments/environment';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    CounterComponent,
-    CounterButtonsComponent,
-    CounterOutputComponent,
-    CustomCounterInputComponent,
-    HomeComponent,
-    HeaderComponent,
-    PostsListComponent,
-    AddPostComponent,
-    EditPostComponent,
-  ],
+  declarations: [AppComponent, HomeComponent, HeaderComponent],
   imports: [
     BrowserModule,
     FormsModule,
