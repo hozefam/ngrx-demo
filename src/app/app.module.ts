@@ -20,7 +20,7 @@ import { environment } from './../environments/environment';
     AppRoutingModule,
     ReactiveFormsModule,
     RouterModule,
-    StoreModule.forRoot(appReducer),
+    StoreModule.forRoot({}),
     StoreDevtoolsModule.instrument({
       maxAge: 25,
       logOnly: environment.production,
