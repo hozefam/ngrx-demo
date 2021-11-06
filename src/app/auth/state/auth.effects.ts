@@ -1,13 +1,16 @@
-import { Actions, act, createEffect, ofType } from '@ngrx/effects';
-import { exhaustMap, map } from 'rxjs/operators';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { Observable, of } from 'rxjs';
+import { catchError, exhaustMap, map } from 'rxjs/operators';
 import { loginStart, loginSuccess } from './auth.actions';
+import {
+  setErrorMessage,
+  setLoadingSpinner,
+} from './../../store/Shared/shared.actions';
 
 import { AppState } from 'src/app/store/app.state';
-import { AuthResponseData } from './../../models/AuthResponseData.model';
 import { AuthService } from './../../services/auth.service';
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { setLoadingSpinner } from './../../store/Shared/shared.actions';
 
 @Injectable()
 export class AuthEffects {
@@ -22,10 +25,18 @@ export class AuthEffects {
       ofType(loginStart),
       exhaustMap((action) => {
         return this.authService.login(action.email, action.password).pipe(
-          map((data: AuthResponseData) => {
+          map((data) => {
             this.store.dispatch(setLoadingSpinner({ status: false }));
+            this.store.dispatch(setErrorMessage({ message: '' }));
             const user = this.authService.formatUser(data);
             return loginSuccess({ user });
+          }),
+          catchError((errResp) => {
+            this.store.dispatch(setLoadingSpinner({ status: false }));
+            const errorMessage = this.authService.getErrorMessage(
+              errResp.error.error.message
+            );
+            return of(setErrorMessage({ message: errorMessage }));
           })
         );
       })
