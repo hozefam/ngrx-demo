@@ -3,8 +3,10 @@ import { RouterModule, Routes } from '@angular/router';
 import { AddPostComponent } from './add-post/add-post.component';
 import { CommonModule } from '@angular/common';
 import { EditPostComponent } from './edit-post/edit-post.component';
+import { EffectsModule } from '@ngrx/effects';
 import { NgModule } from '@angular/core';
 import { POST_STATE } from './state/posts.selectors';
+import { PostsEffects } from './state/post.effects';
 import { PostsListComponent } from './posts-list/posts-list.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { StoreModule } from '@ngrx/store';
@@ -33,6 +35,7 @@ const routes: Routes = [
     ReactiveFormsModule,
     RouterModule.forChild(routes),
     StoreModule.forFeature(POST_STATE, postsReducer),
+    EffectsModule.forFeature([PostsEffects]),
   ],
   declarations: [PostsListComponent, AddPostComponent, EditPostComponent],
 })
