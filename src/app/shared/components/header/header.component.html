@@ -60,6 +60,7 @@
             class="nav-link"
             [routerLinkActive]="'active'"
             [routerLink]="['auth', 'logout']"
+            (click)="onLogout($event)"
             >Logout</a
           >
         </li>

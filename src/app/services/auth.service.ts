@@ -1,8 +1,11 @@
+import { AppState } from '../store/app.state';
 import { AuthResponseData } from './../models/AuthResponseData.model';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { Store } from '@ngrx/store';
 import { User } from './../models/user.model';
+import { autoLogout } from '../auth/state/auth.actions';
 import { environment } from './../../environments/environment.prod';
 
 @Injectable({
@@ -11,7 +14,7 @@ import { environment } from './../../environments/environment.prod';
 export class AuthService {
   timeoutInterval: any;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private store: Store<AppState>) {}
 
   login(email: string, password: string): Observable<AuthResponseData> {
     return this.http.post<AuthResponseData>(
@@ -84,7 +87,15 @@ export class AuthService {
     const expirationDate = user.expireDate.getTime();
     const timeInterval = expirationDate - todaysDate;
     this.timeoutInterval = setTimeout(() => {
-      // Logout functionality or get refresh token
+      this.store.dispatch(autoLogout());
     }, timeInterval);
+  }
+
+  logout() {
+    localStorage.removeItem('userData');
+    if (this.timeoutInterval) {
+      clearTimeout(this.timeoutInterval);
+      this.timeoutInterval = null;
+    }
   }
 }
