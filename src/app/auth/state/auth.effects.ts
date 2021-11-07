@@ -1,12 +1,13 @@
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Observable, of } from 'rxjs';
-import { catchError, exhaustMap, map, tap } from 'rxjs/operators';
 import {
+  autoLogin,
   loginStart,
   loginSuccess,
   signUpStart,
   signUpSuccess,
 } from './auth.actions';
+import { catchError, exhaustMap, map, mergeMap, tap } from 'rxjs/operators';
 import {
   setErrorMessage,
   setLoadingSpinner,
@@ -36,6 +37,7 @@ export class AuthEffects {
             this.store.dispatch(setLoadingSpinner({ status: false }));
             this.store.dispatch(setErrorMessage({ message: '' }));
             const user = this.authService.formatUser(data);
+            this.authService.setUserInLocalStorage(user);
             return loginSuccess({ user });
           }),
           catchError((errResp) => {
@@ -72,6 +74,7 @@ export class AuthEffects {
             this.store.dispatch(setLoadingSpinner({ status: false }));
             this.store.dispatch(setErrorMessage({ message: '' }));
             const user = this.authService.formatUser(data);
+            this.authService.setUserInLocalStorage(user);
             return signUpSuccess({ user: user });
           }),
           catchError((errResp) => {
@@ -86,16 +89,16 @@ export class AuthEffects {
     );
   });
 
-  // signUpRedirect$ = createEffect(
-  //   () => {
-  //     return this.actions$.pipe(
-  //       ofType(signUpSuccess),
-  //       tap((action) => {
-  //         this.store.dispatch(setErrorMessage({ message: '' }));
-  //         this.router.navigate(['/']);
-  //       })
-  //     );
-  //   },
-  //   { dispatch: false }
-  // );
+  autoLogin$ = createEffect(
+    () => {
+      return this.actions$.pipe(
+        ofType(autoLogin),
+        map((action) => {
+          const user = this.authService.getUserFromLocalStorage();
+          console.log(user);
+        })
+      );
+    },
+    { dispatch: false }
+  );
 }
