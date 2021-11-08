@@ -23,4 +23,13 @@ export class PostsService {
         })
       );
   }
+
+  addPost(post: Post): Observable<{ name: string }> {
+    return this.http.post<{ name: string }>(
+      'https://ngrx-demo-7d155-default-rtdb.firebaseio.com/posts.json',
+      {
+        ...post,
+      }
+    );
+  }
 }
